@@ -1,0 +1,108 @@
+<html>
+<TITLE>Job Search</TITLE>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style type="text/css">
+	header{
+		text-align: center;
+		padding: 20px;
+	}
+	.Accholder{
+		float: right;
+		background-color: "red";
+	}
+</style>
+<body>
+	<header class="bg-danger">
+		<h1 class="text-success">Companies Hiring During Covid-19</h1>
+	</header>
+	<div class="container-fluid">
+		<div class="Accholder">
+			<input type="button" name="Login" value="Login" class="btn btn-primary" data-toggle="modal" data-target="#ModalLogin"/>
+			<input type="button" name="Register" value="Register" class="btn btn-primary" data-toggle="modal" data-target="#ModalRegister"/>
+		</div>
+	</div>
+    <!-- Login Modal -->
+    <div class="modal fade" id="ModalLogin" role="dialog">
+    <div class="modal-dialog">
+      <!-- Login Form -->
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="form-group">
+          <label for="Email1">Email address</label>
+          <input type="email" name="Email" class="form-control" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" name="Password" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><a data-dismiss="modal" aria-label="Close" data-toggle="modal" data-target="#PasswordChange" >Forget password</a></label>
+        </div>
+        <button type="submit" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Login</button>
+       </form>
+     </div>
+     </div>
+     <!--Login Form --> 
+    </div>
+    </div>
+    <!-- Login Modal -->
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="ModalRegister" role="dialog">
+    <div class="modal-dialog">
+      <!-- Register Form -->
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" name="Email"class="form-control" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="Password" class="form-control" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <label for="re-password">Re-enter-Password</label>
+          <input type="password" name=RePassword class="form-control" placeholder="Re-enter Password">
+        </div>
+        
+        <button type="submit" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Register</button>
+       </form>
+     </div>
+     </div>
+     <!--Register Form --> 
+    </div>
+    </div>
+    <!-- Register Modal -->
+
+    <!--Forgot password -->
+    <div class="modal fade" id="PasswordChange" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="form-group">
+          <label for="Email1">Email address</label>
+        </div>
+        <div class="form-inline">
+          <input type="email" name="Email" class="form-control" placeholder="Enter email">
+          <input type="button" class="form-control btn bg-success" name="otp" value="send otp">
+        </div>
+       </form>
+     </div>
+     </div>
+    </div>
+    </div>    
+    <!--Forgot password -->
+</body>
+</html>

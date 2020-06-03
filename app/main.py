@@ -1,14 +1,15 @@
 import sys
-from flask import Flask, jsonify,request
+from flask import Flask, jsonify,request,render_template
 from flask_mail import Mail,Message
 from flask_sqlalchemy import SQLAlchemy
 from flask_heroku import Heroku
+import json
 import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-#app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///hiring'
-heroku=Heroku(app)
+app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///hiring'
+#heroku=Heroku(app)
 db=SQLAlchemy(app)
 mail_settings={
     "MAIL_SERVER":"smtp.gmail.com",
@@ -41,7 +42,7 @@ class Jobs(db.Model):
         self.link=link
 
     def __repr__(self):
-        return '<User (company="{}",location="{}")>'.format(self.company,self.location) 
+        return '{'+"sno:{},company:{}".format(self.sno,self.company)+'}'
 
 def send_otp():
     with app.app_context():
@@ -64,10 +65,10 @@ def commit():
 @app.route('/')
 @app.route('/Home')
 def get_tasks():
-    print(Jobs.query.all())
-    return 'success'
+    res=Jobs.query.limit(10).all()
+    return render_template("index.html",result=res)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
 
 
