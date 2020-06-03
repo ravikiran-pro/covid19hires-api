@@ -12,6 +12,8 @@ psycopg2 = "*"
 flask-mail = "*"
 flask-sqlalchemy = "*"
 flask-heroku = "*"
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
 
 [requires]
 python_version = "3.6"

@@ -3,6 +3,8 @@ from flask import Flask, jsonify,request,render_template
 from flask_mail import Mail,Message
 from flask_sqlalchemy import SQLAlchemy
 from flask_heroku import Heroku
+from flask_marshmallow import Marshmallow
+from marshmallow_sqlalchemy import ModelSchema
 import json
 import os
 
@@ -11,6 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///hiring'
 #heroku=Heroku(app)
 db=SQLAlchemy(app)
+ma=Marshmallow(app)
 mail_settings={
     "MAIL_SERVER":"smtp.gmail.com",
     "MAIL_PORT":465,
@@ -40,9 +43,14 @@ class Jobs(db.Model):
         self.type=type
         self.sector=sector
         self.link=link
+        self.list=[]
 
-    def __repr__(self):
-        return '{'+"sno:{},company:{}".format(self.sno,self.company)+'}'
+    #def __repr__(self):
+    #    return '{'+"sno:{},company:{}".format(self.sno,self.company)+'}'
+
+class JobsSchema(ModelSchema):
+    class Meta:
+        model=Jobs
 
 def send_otp():
     with app.app_context():
@@ -62,11 +70,20 @@ def commit():
     db.session.commit()
     return "Data added sucessfull"
 
+@app.route('/api/all')
+def get_all_results():
+    res=Jobs.query.limit(10).all()
+    user_schema=JobsSchema(many=True)
+    output=user_schema.dump(res)
+    return jsonify({'user':output})
+
 @app.route('/')
 @app.route('/Home')
 def get_tasks():
     res=Jobs.query.limit(10).all()
-    return render_template("index.html",result=res)
+    user_schema=JobsSchema(many=True)
+    output=user_schema.dump(res)
+    return render_template("index.html",result=jsonify({'user':output}))
 
 if __name__ == '__main__':
     app.run(debug=True)
