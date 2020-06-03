@@ -12,7 +12,6 @@ psycopg2 = "*"
 flask-mail = "*"
 flask-sqlalchemy = "*"
 flask-heroku = "*"
-dataclasses = "*"
 
 [requires]
 python_version = "3.6"
