@@ -77,6 +77,7 @@ def get_all_results():
     output=user_schema.dump(res)
     return jsonify({'user':output})
 
+@app.route('/')
 @app.route('/Home')
 def get_tasks():
     res=Jobs.query.limit(10).all()
