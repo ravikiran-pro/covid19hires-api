@@ -6,7 +6,6 @@ from flask_heroku import Heroku
 from flask_marshmallow import Marshmallow
 from marshmallow_sqlalchemy import ModelSchema
 from flask_cors import CORS
-from mail import *
 import json
 import os
 
@@ -84,7 +83,7 @@ def get_tasks():
     output=user_schema.dump(res)
     return jsonify({'output':output})
 
-@app.route('/',methods=['POST'])
+@app.route('/')
 def get_task():
     res=db.session.query(Jobs.company).limit(10)
     user_schema=JobsSchema(many=True)
