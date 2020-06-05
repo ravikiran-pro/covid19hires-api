@@ -76,22 +76,20 @@ def get_all_results():
     output=user_schema.dump(res)
     return jsonify({'user':output})
 
-@app.route('/company-name')
+@app.route('/api/company-names',methods=['POST'])
 def get_tasks():
-    res=db.session.query(Jobs.company).limit(10)
+    res=db.session.query(Jobs.role).distinct().limit(10)
     user_schema=JobsSchema(many=True)
     output=user_schema.dump(res)
-    return jsonify({"output":"success"})
-    return render_template("index.html",result=jsonify({'user':output}))
+    return jsonify({'output':output})
 
 @app.route('/',methods=['POST'])
 def get_task():
     res=db.session.query(Jobs.company).limit(10)
     user_schema=JobsSchema(many=True)
     output=user_schema.dump(res)
-    return jsonify({"output":"success"})
     return render_template("index.html",result=jsonify({'user':output}))
 
 if __name__=="__main__":
-    app.run()
+    app.run(debug=True)
 
