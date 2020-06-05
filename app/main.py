@@ -5,10 +5,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_heroku import Heroku
 from flask_marshmallow import Marshmallow
 from marshmallow_sqlalchemy import ModelSchema
+from flask_cors import CORS
 import json
 import os
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///hiring'
 #heroku=Heroku(app)
@@ -45,9 +47,6 @@ class Jobs(db.Model):
         self.link=link
         self.list=[]
 
-    #def __repr__(self):
-    #    return '{'+"sno:{},company:{}".format(self.sno,self.company)+'}'
-
 class JobsSchema(ModelSchema):
     class Meta:
         model=Jobs
@@ -77,15 +76,22 @@ def get_all_results():
     output=user_schema.dump(res)
     return jsonify({'user':output})
 
-@app.route('/')
-@app.route('/Home')
+@app.route('/company-name')
 def get_tasks():
-    res=Jobs.query.limit(10).all()
+    res=db.session.query(Jobs.company).limit(10)
     user_schema=JobsSchema(many=True)
     output=user_schema.dump(res)
+    return jsonify({"output":"success"})
     return render_template("index.html",result=jsonify({'user':output}))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/',methods=['POST'])
+def get_task():
+    res=db.session.query(Jobs.company).limit(10)
+    user_schema=JobsSchema(many=True)
+    output=user_schema.dump(res)
+    return jsonify({"output":"success"})
+    return render_template("index.html",result=jsonify({'user':output}))
 
+if __name__=="__main__":
+    app.run()
 
