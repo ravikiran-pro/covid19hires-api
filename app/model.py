@@ -1,4 +1,4 @@
-from app.config import *
+from app.config import db
 from marshmallow_sqlalchemy import ModelSchema
 
 class Jobs(db.Model):

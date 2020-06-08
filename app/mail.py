@@ -1,6 +1,7 @@
 from app.config import app,mail
 from flask_mail import Message
 
+
 def send_otp():
     with app.app_context():
         msg = Message(subject="Hello",

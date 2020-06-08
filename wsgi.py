@@ -1,1 +1,1 @@
-from app.main import app
+from app.__init__ import app
