@@ -7,7 +7,7 @@ from flask_mail import Mail
 
 app = Flask(__name__)
 CORS(app)
-app.config['Debug']=True
+app.config['debug']=True
 app.config['SECRET_KEY']="37%^@sh3(&*@*#("
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///hiring'

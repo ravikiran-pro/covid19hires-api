@@ -15,6 +15,7 @@ flask-heroku = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 flask-cors = "*"
+flask-json = "*"
 
 [requires]
 python_version = "3.6"

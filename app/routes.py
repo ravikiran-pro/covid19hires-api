@@ -1,9 +1,8 @@
 from app.config import app,db
-from flask import render_template,jsonify,session
+from flask import render_template,jsonify,session,request
 from app.model import Jobs,JobsSchema
 from app.mail import send_otp
-
-
+from flask_json import as_json
 @app.route('/Login')
 def commit():
     #job=Jobs(sno=3019,company="livewire",location="chennai",role="trainer",type="full",sector="teaching",link="support.livewire.com")
@@ -50,10 +49,27 @@ def getSectors():
     output=user_schema.dump(res)
     return jsonify({'output':output})
 
-@app.route('/')
+@app.route('/api/all',methods=['POST'])
 def get_task():
-    send_otp()
-    res=db.session.query(Jobs.company).limit(10)
+    form=request.get_json()
+    start=int(form["start"])
+    end=int(form["end"])
+    res=db.session.query(Jobs.company,Jobs.role,Jobs.location,Jobs.link).filter(Jobs.sno>start,Jobs.sno<end)
     user_schema=JobsSchema(many=True)
     output=user_schema.dump(res)
-    return render_template("index.html",result=jsonify({'user':output}))
+    return jsonify(output)
+    return jsonify({'user':output})
+
+@app.route('/register',methods=['GET','POST'])
+def new_user():
+    print(request.data)
+    #import secrets
+    #session["hiretohire"]=secrets.token_urlsafe(20)
+    if "hiretohire" in session:
+        cd=session["hiretohire"]
+        print(cd)
+    return 'alert("data sucessfull")'
+
+@app.route('/')
+def hello():
+    return "working"
