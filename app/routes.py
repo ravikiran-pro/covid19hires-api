@@ -1,8 +1,9 @@
 from app.config import app,db
-from flask import render_template,jsonify,session,request
+from flask import render_template,jsonify,session,request,url_for,redirect
 from app.model import Jobs,JobsSchema
 from app.mail import send_otp
 from flask_json import as_json
+from sqlalchemy.sql import text
 @app.route('/Login')
 def commit():
     #job=Jobs(sno=3019,company="livewire",location="chennai",role="trainer",type="full",sector="teaching",link="support.livewire.com")
@@ -53,10 +54,10 @@ def getSectors():
 def get_task():
     form=request.get_json()
     start=int(form["start"])
-    end=int(form["end"])
-    res=db.session.query(Jobs.company,Jobs.role,Jobs.location,Jobs.link).filter(Jobs.sno>start,Jobs.sno<end)
+    res=db.session.query(Jobs.sno,Jobs.company,Jobs.role,Jobs.location,Jobs.link).filter(Jobs.sno>start).limit(10)
     user_schema=JobsSchema(many=True)
     output=user_schema.dump(res)
+    print(output)
     return jsonify(output)
     return jsonify({'user':output})
 
@@ -69,6 +70,40 @@ def new_user():
         cd=session["hiretohire"]
         print(cd)
     return 'alert("data sucessfull")'
+
+def get_searchResults(form):
+    del form["start"]
+    query=''
+    for key,value in form.items():
+        if value is not '':
+            query+="{}='{}'".format(key,value)
+            query+=" AND "
+    query=query[:-4]
+    return query
+
+@app.route('/api/searchresults/forward',methods=['POST'])
+def forward():
+    form=request.get_json()
+    start=form["start"]
+    query=get_searchResults(form)
+    res=db.session.query(Jobs.sno,Jobs.company,Jobs.role,Jobs.location,Jobs.link).filter(text(query)).filter(Jobs.sno>start).limit(4)
+    user_schema=JobsSchema(many=True)
+    output=user_schema.dump(res)
+    print(output)
+    return jsonify(output)
+    return jsonify({'user':output})
+
+@app.route('/api/searchresults/backward',methods=['POST'])
+def BackwardSearchResults():
+    form=request.get_json()
+    start=form["start"]
+    query=get_searchResults(form)
+    res=db.session.query(Jobs.sno,Jobs.company,Jobs.role,Jobs.location,Jobs.link).filter(text(query)).filter(Jobs.sno<start).limit(8)
+    user_schema=JobsSchema(many=True)
+    output=user_schema.dump(res)
+    print(output)
+    return jsonify(output)
+    return jsonify({'user':output})
 
 @app.route('/')
 def hello():
