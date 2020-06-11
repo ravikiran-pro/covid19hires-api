@@ -4,6 +4,7 @@ from app.model import Jobs,JobsSchema
 from app.mail import send_otp
 from flask_json import as_json
 from sqlalchemy.sql import text
+
 @app.route('/Login')
 def commit():
     #job=Jobs(sno=3019,company="livewire",location="chennai",role="trainer",type="full",sector="teaching",link="support.livewire.com")
@@ -50,17 +51,6 @@ def getSectors():
     output=user_schema.dump(res)
     return jsonify({'output':output})
 
-@app.route('/api/all',methods=['POST'])
-def get_task():
-    form=request.get_json()
-    start=int(form["start"])
-    res=db.session.query(Jobs.sno,Jobs.company,Jobs.role,Jobs.location,Jobs.link).filter(Jobs.sno>start).limit(10)
-    user_schema=JobsSchema(many=True)
-    output=user_schema.dump(res)
-    print(output)
-    return jsonify(output)
-    return jsonify({'user':output})
-
 @app.route('/register',methods=['GET','POST'])
 def new_user():
     print(request.data)
@@ -81,29 +71,31 @@ def get_searchResults(form):
     query=query[:-4]
     return query
 
-@app.route('/api/searchresults/forward',methods=['POST'])
+def Reverse_Dictlist(list):
+    revlist=[]
+    for i in range(len(list)-1,-1,-1):
+        revlist.append(list[i])
+    return revlist
+
+@app.route('/api/searchresults/forwards',methods=['POST'])
 def forward():
     form=request.get_json()
-    start=form["start"]
+    start=form["start"] 
     query=get_searchResults(form)
-    res=db.session.query(Jobs.sno,Jobs.company,Jobs.role,Jobs.location,Jobs.link).filter(text(query)).filter(Jobs.sno>start).limit(4)
+    res=db.session.query(Jobs.sno,Jobs.company,Jobs.role,Jobs.location,Jobs.link).filter(text(query)).filter(Jobs.sno>start).order_by(Jobs.sno.asc()).limit(4)
     user_schema=JobsSchema(many=True)
     output=user_schema.dump(res)
-    print(output)
     return jsonify(output)
-    return jsonify({'user':output})
 
-@app.route('/api/searchresults/backward',methods=['POST'])
+@app.route('/api/searchresults/backwards',methods=['POST'])
 def BackwardSearchResults():
     form=request.get_json()
     start=form["start"]
     query=get_searchResults(form)
-    res=db.session.query(Jobs.sno,Jobs.company,Jobs.role,Jobs.location,Jobs.link).filter(text(query)).filter(Jobs.sno<start).limit(8)
+    res=db.session.query(Jobs.sno,Jobs.company,Jobs.role,Jobs.location,Jobs.link).filter(text(query)).filter(Jobs.sno<start).order_by(Jobs.sno.desc()).limit(4)
     user_schema=JobsSchema(many=True)
     output=user_schema.dump(res)
-    print(output)
-    return jsonify(output)
-    return jsonify({'user':output})
+    return jsonify(Reverse_Dictlist(output))
 
 @app.route('/')
 def hello():
