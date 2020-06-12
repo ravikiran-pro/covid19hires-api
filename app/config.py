@@ -1,12 +1,14 @@
 from flask import Flask
-from flask_cors import CORS
+#from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_heroku import Heroku
 from flask_marshmallow import Marshmallow
 from flask_mail import Mail
 
-app = Flask(__name__)
-CORS(app)
+template_dir=('build/')
+static_dir=('build/static')
+app = Flask(__name__,static_folder=static_dir,template_folder=template_dir)
+#CORS(app)
 app.config['debug']=True
 app.config['SECRET_KEY']="37%^@sh3(&*@*#("
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False

@@ -4,7 +4,6 @@ from app.model import Jobs,JobsSchema
 from app.mail import send_otp
 from flask_json import as_json
 from sqlalchemy.sql import text
-
 @app.route('/Login')
 def commit():
     #job=Jobs(sno=3019,company="livewire",location="chennai",role="trainer",type="full",sector="teaching",link="support.livewire.com")
@@ -99,4 +98,4 @@ def BackwardSearchResults():
 
 @app.route('/')
 def hello():
-    return "working"
+    return render_template('index.html')
